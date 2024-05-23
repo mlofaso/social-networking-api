@@ -5,10 +5,10 @@ module.exports = {
     try {
       const newThought = await Thought.create(req.body);
 
-      const updatedUser = User.findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { _id: req.body.userId },
         { $push: { thoughts: newThought._id } },
-        { runValidators: true, new: true }
+        { new: true }
       );
 
       if (!updatedUser) {
@@ -16,6 +16,7 @@ module.exports = {
       }
       res.json(updatedUser);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
@@ -25,6 +26,7 @@ module.exports = {
       const allThoughts = await Thought.find();
       res.json(allThoughts);
     } catch (err) {
+      console.log(err);
       res.status(500).json(err);
     }
   },
